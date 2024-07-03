@@ -5,6 +5,7 @@ import(
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 )
 
 func handler(w http.ResponseWriter, r *http.Request)  {
@@ -48,9 +49,15 @@ func main ()  {
 	// define the handler func for th api/hello route
 	http.HandleFunc("/api/hello", handler)
 	
+	
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	// start the server on port 8080
-	fmt.Println("Server listening on port 8080")
-	err := http.ListenAndServe(":8080", nil)
+	fmt.Println("Server listening on port %s \n", port)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		panic(err)
 	}
